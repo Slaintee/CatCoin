@@ -60,7 +60,15 @@ def check_balance():
 
 
 def transfer():
-    print()
+    balance_dict = {}
+    with open('balance.csv', 'r') as f:
+        balance_line = f.readlines()[1:]
+        for line in balance_line:
+            bal = line.split(',')
+            wallet = bal[0]
+            balance = bal[1]
+            balance = "".join(balance).replace('\n', '')
+            balance_dict[wallet] = [balance]
 
 
 def main():
