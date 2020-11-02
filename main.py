@@ -7,6 +7,7 @@ CS 166 / Fall 2020
 """
 
 import sys
+import csv
 
 
 def main_menu():
@@ -68,7 +69,41 @@ def transfer():
             wallet = bal[0]
             balance = bal[1]
             balance = "".join(balance).replace('\n', '')
-            balance_dict[wallet] = [balance]
+            balance_dict[wallet] = int(balance)
+    print('Choose a source wallet 1/2/3: ')
+    source = input()
+    while source != '1' and source != '2' and source != '3':
+        source = input(print('Invalid input. Try again: '))
+    print('Choose a destination wallet 1/2/3: ')
+    destination = input()
+    while destination != '1' and destination != '2' and destination != '3' and destination == source:
+        destination = input(print('Invalid input. Try again: '))
+    try:
+        print('Transfer amount: ')
+        amount = float(input())
+    except ValueError:
+        amount = input(print('Invalid input. Try again: '))
+    print('Are you sure you want to transfer', amount, 'CatCoins to Wallet', destination, '? y/n')
+    decision = input()
+    if decision == 'y' or decision == 'Y':
+        if amount > balance_dict[source]:
+            print('Insufficient balance.')
+            print('-----------------------------------------')
+            main_menu()
+        else:
+            balance_dict[source] -= amount
+            balance_dict[destination] += amount
+            header = ['wallet number', 'balance']
+            data = [{'wallet number': '1', 'balance': balance_dict['1']},
+                     {'wallet number': '2', 'balance': balance_dict['2']},
+                     {'wallet number': '3', 'balance': balance_dict['3']}]
+            with open('balance.csv', 'w') as f:
+                writer = csv.DictWriter(f, fieldnames=header)
+                writer.writeheader()
+                writer.writerows(data)
+    print('Transaction complete')
+    print('-----------------------------------------')
+    main_menu()
 
 
 def main():
