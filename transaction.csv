@@ -1,1 +1,0 @@
-from wallet,to wallet,amount,block id,hash of the previous block header (SHA-256)pre,timestamp of the transaction,hash of the current block data (SHA-256),nonce
